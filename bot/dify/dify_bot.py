@@ -11,6 +11,7 @@ from bridge.reply import Reply, ReplyType
 from common.log import logger
 from common import const
 from config import conf
+from common.account_paa import *
 
 class DifyBot(Bot):
     def __init__(self):
@@ -24,6 +25,12 @@ class DifyBot(Bot):
                 query = conf().get('image_create_prefix', ['画'])[0] + query
             logger.info("[DIFY] query={}".format(query))
             session_id = context["session_id"]
+            # print('===session====')
+            # print(session_id)
+            # 判断是否有登录，如果没有，发送注册登录地址
+            if accountBindingByReceiver(session_id) == 0:
+                return
+
             # TODO: 适配除微信以外的其他channel
             channel_type = conf().get("channel_type", "wx")
             user = None

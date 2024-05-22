@@ -24,6 +24,7 @@ from common.time_check import time_checker
 from config import conf, get_appdata_dir
 from lib import itchat
 from lib.itchat.content import *
+from common.account_paa import *
 
 
 @itchat.msg_register([TEXT, VOICE, PICTURE, NOTE, ATTACHMENT, SHARING])
