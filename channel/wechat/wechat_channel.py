@@ -326,6 +326,10 @@ class WechatChannel(ChatChannel):
                 # 记录添加成员失败的错误信息
                 logger.error("[WX] Failed to invite members to chatroom. Error: {}".format(e))
 
+        # 回复后扣除对话次数
+        if reply.type == ReplyType.TEXT:
+            deductDialogueNum(receiver)
+
 def _send_login_success():
     try:
         from common.linkai_client import chat_client

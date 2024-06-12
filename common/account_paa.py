@@ -51,6 +51,38 @@ def checkLoginByReceiver(receiver):
         return 0
         # print('Error:', response.status_code)
 
+def getDialogueNum(receiver):
+    url = baseUrl + 'sys/api/customer/getFreeNumTotal'
+    params = {
+        'key': receiver,
+        'keyType': 3
+    }
+
+    response = requests.get(url, params=params, headers=headers)
+    if response.status_code == 200:
+        result = response.json()
+        print(result)
+        return result
+    else:
+        return 0
+
+def deductDialogueNum(receiver):
+    url = baseUrl + 'sys/api/customer/deductDialogueNum'
+    params = {
+        'key': receiver,
+        'keyType': 3
+    }
+
+    response = requests.get(url, params=params, headers=headers)
+    if response.status_code == 200:
+        result = response.json()
+        logger.info("[WX] receiver={}对话次数扣除成功!".format(receiver))
+        # print(result)
+        # return result
+    else:
+        logger.error("[WX] Error: receiver={}对话次数扣除失败! ".format(receiver))
+
+
 # if __name__ == "__main__":
 #     sing=accountBindingByReceiver('@9bb17cc879842edfcf6abc19f107f22d')
 #     print(sing)

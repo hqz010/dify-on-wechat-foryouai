@@ -30,6 +30,8 @@ class DifyBot(Bot):
             # 判断是否有登录，如果没有，发送注册登录地址
             if accountBindingByReceiver(session_id) == 0:
                 return
+            else:
+                getDialogueNum(session_id)
 
             # TODO: 适配除微信以外的其他channel
             channel_type = conf().get("channel_type", "wx")
