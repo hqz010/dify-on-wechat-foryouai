@@ -5,21 +5,26 @@ from config import conf
 from lib import itchat
 from common.log import logger
 
-baseUrl = 'http://192.168.10.6:8080/paa-boot/'
+# baseUrl = 'http://192.168.10.6:8080/paa-boot/'
+baseUrl = conf().get("paa_boot_url", "https://api3.foryouai.com/")
+paa_boot_key = conf().get("paa_boot_key", "")
 headers = {
     'Content-Type-Type': 'application/json',
-    'Authorization': 'dd05f1c54d63749eda95f9fa6d49v442a'
+    'Authorization': paa_boot_key
 }
 
 def accountBindingByReceiver(receiver):
     login_state = checkLoginByReceiver(receiver)
     if login_state != 1:
         appid = conf().get("wechat_appid")
-        params = {
-            'receiver': receiver
-        }
-        encoded_receiver = urllib.parse.urlencode(params)
-        miniappurl = f"你还未注册或登录，请先点击以下地址注册或登！weixin://dl/business/?appid={appid}&path=pages/index/index&{encoded_receiver}"
+        # params = {
+        #     'receiver': receiver
+        # }
+        # encoded_receiver = urllib.parse.urlencode(params)
+        # miniappurl = f"你还未注册或登录，请先点击以下地址注册或登！weixin://dl/business/?appid={appid}&path=pages/index/index&{encoded_receiver}&env_version=trial"
+        url = f"receiver={receiver}"
+        encoded_url = urllib.parse.quote_plus(url)
+        miniappurl = f"你还未注册或登录，请先点击以下地址注册或登！weixin://dl/business/?appid={appid}&path=pages/index/index&query={encoded_url}"
         itchat.send(miniappurl, toUserName=receiver)
         logger.info("[WX] sendMsg={}, receiver={}".format(miniappurl, receiver))
 

@@ -138,6 +138,8 @@ available_setting = {
     "wechatcomapp_secret": "",  # 企业微信app的secret
     "wechatcomapp_agent_id": "",  # 企业微信app的agent_id
     "wechatcomapp_aes_key": "",  # 企业微信app的aes_key
+    #微信配置
+    "wechat_appid": "",  # 微信appid
 
     # 飞书配置
     "feishu_port": 80,  # 飞书bot监听端口
@@ -171,6 +173,9 @@ available_setting = {
     "linkai_api_key": "",
     "linkai_app_code": "",
     "linkai_api_base": "https://api.link-ai.chat",  # linkAI服务地址，若国内无法访问或延迟较高可改为 https://api.link-ai.tech
+    # paa_boot后端相关配置
+    "paa_boot_url": "",
+    "paa_boot_key": "",
 }
 
 
