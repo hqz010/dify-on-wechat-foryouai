@@ -232,6 +232,7 @@ class WechatChannel(ChatChannel):
     # 统一的发送函数，每个Channel自行实现，根据reply的type字段发送不同类型的消息
     def send(self, reply: Reply, context: Context):
         receiver = context.get("receiver")
+
         if reply.type == ReplyType.TEXT:
             itchat.send(reply.content, toUserName=receiver)
             logger.info("[WX] sendMsg={}, receiver={}".format(reply, receiver))
@@ -327,8 +328,11 @@ class WechatChannel(ChatChannel):
                 logger.error("[WX] Failed to invite members to chatroom. Error: {}".format(e))
 
         # 回复后扣除对话次数
-        if reply.type == ReplyType.TEXT:
-            deductDialogueNum(receiver)
+        # if reply.type == ReplyType.TEXT:
+        #     isVip=checkVip(receiver)
+        #     # 如果不是会员扣积分
+        #     if isVip==0:
+        #         deductDialogueNum(receiver)
 
 def _send_login_success():
     try:

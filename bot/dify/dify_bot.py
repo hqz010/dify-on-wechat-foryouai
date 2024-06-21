@@ -31,7 +31,15 @@ class DifyBot(Bot):
             if accountBindingByReceiver(session_id) == 0:
                 return
             else:
-                getDialogueNum(session_id)
+                isvip = checkVip(session_id)
+                if isvip == 0:
+                    integral = getDialogueNum(session_id)  # 查询积分
+                    if integral<1:
+                        reply = Reply(ReplyType.TEXT, "您当前还不是Vip会员及积分不足，请先购买Vip会员~")
+                        return reply
+                    else:
+                        deductDialogueNum(session_id)  #扣除积分
+
 
             # TODO: 适配除微信以外的其他channel
             channel_type = conf().get("channel_type", "wx")

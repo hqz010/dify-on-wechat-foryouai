@@ -14,6 +14,11 @@ headers = {
 }
 
 def accountBindingByReceiver(receiver):
+    """
+    判断用户是否已登录
+    :param receiver：微信会话id
+    :return 登录状态
+    """
     login_state = checkLoginByReceiver(receiver)
     if login_state != 1:
         appid = conf().get("wechat_appid")
@@ -24,7 +29,7 @@ def accountBindingByReceiver(receiver):
         # miniappurl = f"你还未注册或登录，请先点击以下地址注册或登！weixin://dl/business/?appid={appid}&path=pages/index/index&{encoded_receiver}&env_version=trial"
         url = f"receiver={receiver}"
         encoded_url = urllib.parse.quote_plus(url)
-        miniappurl = f"你还未注册或登录，请先点击以下地址注册或登！weixin://dl/business/?appid={appid}&path=pages/index/index&query={encoded_url}"
+        miniappurl = f"你还未注册或登录绑定，请先点击以下旺财-AI私人助理微信小程序链接注册或登录！weixin://dl/business/?appid={appid}&path=pages/index/index&query={encoded_url}"
         itchat.send(miniappurl, toUserName=receiver)
         logger.info("[WX] sendMsg={}, receiver={}".format(miniappurl, receiver))
 
@@ -57,6 +62,11 @@ def checkLoginByReceiver(receiver):
         # print('Error:', response.status_code)
 
 def getDialogueNum(receiver):
+    """
+    查询积分
+    :param receiver：微信会话id
+    :return 剩余积分
+    """
     url = baseUrl + 'sys/api/customer/getFreeNumTotal'
     params = {
         'key': receiver,
@@ -66,12 +76,17 @@ def getDialogueNum(receiver):
     response = requests.get(url, params=params, headers=headers)
     if response.status_code == 200:
         result = response.json()
-        print(result)
+        # print(result)
         return result
     else:
         return 0
 
 def deductDialogueNum(receiver):
+    """
+    扣除积分
+    :param receiver：微信会话id
+    :return 扣除是否成功
+    """
     url = baseUrl + 'sys/api/customer/deductDialogueNum'
     params = {
         'key': receiver,
@@ -86,6 +101,29 @@ def deductDialogueNum(receiver):
         # return result
     else:
         logger.error("[WX] Error: receiver={}对话次数扣除失败! ".format(receiver))
+
+def checkVip(receiver):
+    """
+    查询是否是会员
+    :param receiver：微信会话id
+    :return 是否是会员
+    """
+    url = baseUrl + 'sys/api/customer/checkVipByKey'
+    params = {
+        'key': receiver,
+        'keyType': 3
+    }
+
+    response = requests.get(url, params=params, headers=headers)
+    if response.status_code == 200:
+        result = response.json()
+        logger.info("[WX] receiver={}查询是否为会员成功!".format(receiver))
+        print(result)
+        vip=result['result']['isVip']
+        return vip
+    else:
+        logger.error("[WX] Error: receiver={}查询是否为会员失败! ".format(receiver))
+        return 0
 
 
 # if __name__ == "__main__":
