@@ -29,7 +29,7 @@ def accountBindingByReceiver(receiver):
         # miniappurl = f"你还未注册或登录，请先点击以下地址注册或登！weixin://dl/business/?appid={appid}&path=pages/index/index&{encoded_receiver}&env_version=trial"
         url = f"receiver={receiver}"
         encoded_url = urllib.parse.quote_plus(url)
-        miniappurl = f"你还未注册或登录绑定，请先点击以下旺财-AI私人助理微信小程序链接注册或登录！weixin://dl/business/?appid={appid}&path=pages/index/index&query={encoded_url}"
+        miniappurl = f"你还未注册或登录绑定，请先点击以下‘真好-AI亲子教育私人助理’微信小程序链接注册或登录！weixin://dl/business/?appid={appid}&path=pages/index/index&query={encoded_url}"
         itchat.send(miniappurl, toUserName=receiver)
         logger.info("[WX] sendMsg={}, receiver={}".format(miniappurl, receiver))
 

@@ -13,6 +13,7 @@ from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from config import conf
+from common.account_paa import *
 
 class ByteDanceCozeBot(Bot):
     def __init__(self):
@@ -25,6 +26,26 @@ class ByteDanceCozeBot(Bot):
             logger.info("[COZE] query={}".format(query))
 
             session_id = context["session_id"]
+
+            # 判断是否有登录，如果没有，发送注册登录地址 author:jason date:2024-6-27
+            integral = 0  #积分
+            if accountBindingByReceiver(session_id) == 0:
+                return
+            else:
+                isvip = checkVip(session_id)
+                if isvip == 0:
+                    integral = getDialogueNum(session_id)  # 查询积分
+                    if integral < 1:
+                        appid = conf().get("wechat_appid")
+                        url = f"receiver={session_id}"
+                        encoded_url = urllib.parse.quote_plus(url)
+                        miniappurl = f"您当前还不是Vip会员及积分不足，请先购买Vip会员~！请点击以下地址开通！weixin://dl/business/?appid={appid}&path=pages/index/index&query={encoded_url}"
+                        # reply = Reply(ReplyType.TEXT, "您当前还不是Vip会员及积分不足，请先购买Vip会员~")
+                        reply = Reply(ReplyType.TEXT, miniappurl)
+                        return reply
+                    # else:
+                    #     deductDialogueNum(session_id)  # 扣除积分
+
             session = self.sessions.session_query(query, session_id)
             logger.debug("[COZE] session query={}".format(session.messages))
             reply_content, err = self._reply_text(session_id, session)
@@ -39,6 +60,9 @@ class ByteDanceCozeBot(Bot):
                     reply_content["completion_tokens"],
                 )
             )
+            if integral > 0:
+                deductDialogueNum(session_id)  # 扣除积分
+
             return Reply(ReplyType.TEXT, reply_content["content"])
         else:
             reply = Reply(ReplyType.ERROR, "Bot不支持处理{}类型的消息".format(context.type))
