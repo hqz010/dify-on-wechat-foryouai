@@ -30,15 +30,15 @@ class DifyBot(Bot):
             # 判断是否有登录，如果没有，发送注册登录地址
             if accountBindingByReceiver(session_id) == 0:
                 return
-            else:
-                isvip = checkVip(session_id)
-                if isvip == 0:
-                    integral = getDialogueNum(session_id)  # 查询积分
-                    if integral<1:
-                        reply = Reply(ReplyType.TEXT, "您当前还不是Vip会员及积分不足，请先购买Vip会员~")
-                        return reply
-                    else:
-                        deductDialogueNum(session_id)  #扣除积分
+            # else:
+            #     isvip = checkVip(session_id)
+            #     if isvip == 0:
+            #         integral = getDialogueNum(session_id)  # 查询积分
+            #         if integral<1:
+            #             reply = Reply(ReplyType.TEXT, "您当前还不是Vip会员及积分不足，请先购买Vip会员~")
+            #             return reply
+            #         else:
+            #             deductDialogueNum(session_id)  #扣除积分
 
 
             # TODO: 适配除微信以外的其他channel
@@ -73,7 +73,7 @@ class DifyBot(Bot):
 
     def _get_payload(self, query, session: DifySession, response_mode):
         return {
-            'inputs': {},
+            'inputs': {'account': session.get_session_id()},
             "query": query,
             "response_mode": response_mode,
             "conversation_id": session.get_conversation_id(),

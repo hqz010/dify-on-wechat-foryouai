@@ -123,7 +123,7 @@ class Hello(Plugin):
         return help_text
 
     def _load_config_template(self):
-        logger.debug("No Hello plugin config.json, use plugins/hello/config.json.template")
+        logger.debug("No Hello plugin config-coze.json, use plugins/hello/config-coze.json.template")
         try:
             plugin_config_path = os.path.join(self.path, "config.json.template")
             if os.path.exists(plugin_config_path):

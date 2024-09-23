@@ -3,7 +3,7 @@ set -e
 
 # build prefix
 DIFY_ON_WECHAT_PREFIX=${DIFY_ON_WECHAT_PREFIX:-""}
-# path to config.json
+# path to config-coze.json
 DIFY_ON_WECHAT_CONFIG_PATH=${DIFY_ON_WECHAT_CONFIG_PATH:-""}
 # execution command line
 DIFY_ON_WECHAT_EXEC=${DIFY_ON_WECHAT_EXEC:-""}
@@ -27,7 +27,7 @@ if [ "$DIFY_ON_WECHAT_PREFIX" == "" ] ; then
     DIFY_ON_WECHAT_PREFIX=/app
 fi
 
-# DIFY_ON_WECHAT_CONFIG_PATH is empty, use '/app/config.json'
+# DIFY_ON_WECHAT_CONFIG_PATH is empty, use '/app/config-coze.json'
 if [ "$DIFY_ON_WECHAT_CONFIG_PATH" == "" ] ; then
     DIFY_ON_WECHAT_CONFIG_PATH=$DIFY_ON_WECHAT_PREFIX/config.json
 fi
@@ -37,7 +37,7 @@ if [ "$DIFY_ON_WECHAT_EXEC" == "" ] ; then
     DIFY_ON_WECHAT_EXEC="python app.py"
 fi
 
-# modify content in config.json
+# modify content in config-coze.json
 # if [ "$OPEN_AI_API_KEY" == "YOUR API KEY" ] || [ "$OPEN_AI_API_KEY" == "" ]; then
 #     echo -e "\033[31m[Warning] You need to set OPEN_AI_API_KEY before running!\033[0m"
 # fi
