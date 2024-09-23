@@ -31,6 +31,14 @@ Dify接入微信生态的**详细教程**请查看文章 [**手摸手教你把 D
 - [ ] **钉钉** 待测试
 - [ ] **飞书** 待测试
 
+# 交流群
+
+
+|<img width="240" src="./docs/images/wechat.jpg">|<img width="240" src="./docs/images/supportme.jpg">|
+|:-:|:-:|
+|添加我的微信拉你进交流群|开源不易，感谢打赏🎉|
+
+
 # 最新功能
 ## 1. 支持企业微信个人号（仅支持windows系统）
 ![wework](./docs/images/wework.jpg)
@@ -165,9 +173,28 @@ python3 app.py                                    # windows环境下该命令通
 
 特别感谢 [**@绛烨**](https://github.com/jiangye520) 提供内测coze api key
 
+## 6. 支持dify voice
 
+dify语音相关配置如下，另外需要在dify应用中开启语音转文字以及文字转语音功能
+
+```bash
+{
+  "dify_api_base": "https://api.dify.ai/v1",
+  "dify_api_key": "app-xxx",
+  "dify_app_type": "chatbot",
+  "voice_reply_voice": true,   # 是否使用语音回复语音
+  "always_reply_voice": false, # 是否一直使用语音回复
+  "voice_to_text": "dify",     # 语音识别引擎
+  "text_to_voice": "dify"      # 语音合成引擎
+}
+```
 
 # 更新日志
+- 2024/09/18 支持dify voice
+- 2024/08/09 dify chatbot类型应用支持解析markdown格式响应，分别发送文本、图片和文件
+- 2024/08/04 支持dify图片识别功能
+- 2024/08/03 微信支持通过web ui扫码登录或异常重启，已适配docker容器
+- 2024/08/01 同步上游chatgpt on wechat最新功能，docker镜像地址支持阿里云容器仓库ACR
 - 2024/04/30 支持windows环境下企业微信个人号
 - 2024/04/24 集成JinaSum插件，修复总结微信公众号文章，修复dify usage key error, 修复dify私有部署的图片url错误
 - 2024/04/16 支持基本的企业微信客服通道，感谢[**@lei195827**](https://github.com/lei195827), [**@sisuad**](https://github.com/sisuad) 的贡献
@@ -176,13 +203,6 @@ python3 app.py                                    # windows环境下该命令通
 - 2024/04/04 支持docker部署
 - 2024/03/31 支持coze api(内测版)
 - 2024/03/29 支持dify基础的对话工作流，由于dify官网还未上线工作流，需要自行部署测试 [0.6.0-preview-workflow.1](https://github.com/langgenius/dify/releases/tag/0.6.0-preview-workflow.1)。
-# Dify on WeChat 交流群
-
-添加我的微信拉你进群(之前的企业微信好友达到上限了，无法验证通过了，麻烦未通过好友的重新添加下面的个人微信吧)
-
-<img width="240" src="./docs/images/image3.jpg">
-
-
 
 # 快速开始
 
@@ -297,3 +317,13 @@ docker logs -f dify-on-wechat  # 查看二维码并登录
 - [ ] **支持：** 企业微信个人号 
 
 也请各位大佬多多提PR，我社畜打工人，精力实在有限~
+
+# 致谢
+
+感谢所有打赏的朋友。
+
+感谢 [auto-coder](https://github.com/allwefantasy/auto-coder) 项目的自动编程工具。
+
+![auto-coder-1](./docs/images/auto-coder-1.jpg)
+
+![auto-coder-2](./docs/images/auto-coder-2.jpg)
