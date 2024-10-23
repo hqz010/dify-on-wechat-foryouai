@@ -53,12 +53,36 @@ class ByteDanceCozeBot(Bot):
                 return Reply(ReplyType.ERROR, f"unsupported channel type: {channel_type}, now coze only support wx, wechatcom_app, wechatmp, wechatmp_service channel")
             logger.debug(f"[COZE] user_id={user_id}")
             session_id = context["session_id"]
+
+            # 判断是否有登录，如果没有，发送注册登录地址 author:jason date:2024-6-27
+            integral = 0  #积分
+            if accountBindingByReceiver(session_id) == 0:
+                return
+            else:
+                isvip = checkVip(session_id)
+                if isvip == 0:
+                    integral = getDialogueNum(session_id)  # 查询积分
+                    if integral < 1:
+                        appid = conf().get("wechat_appid")
+                        url = f"receiver={session_id}"
+                        encoded_url = urllib.parse.quote_plus(url)
+                        miniappurl = f"您当前还不是Vip会员及积分不足，请先购买Vip会员~！请点击以下地址开通！weixin://dl/business/?appid={appid}&path=pages/index/index&query={encoded_url}"
+                        # reply = Reply(ReplyType.TEXT, "您当前还不是Vip会员及积分不足，请先购买Vip会员~")
+                        reply = Reply(ReplyType.TEXT, miniappurl)
+                        return reply
+                    # else:
+                    #     deductDialogueNum(session_id)  # 扣除积分
+
             session = self.sessions.session_query(query, user_id, session_id)
             logger.debug(f"[COZE] session={session} query={query}")
             reply, err = self._reply(query, session, context)
             if err != None:
                 error_msg = conf().get("error_reply", "我暂时遇到了一些问题，请您稍后重试~")
                 reply = Reply(ReplyType.TEXT, error_msg)
+            
+            if integral > 0:
+                deductDialogueNum(session_id)  # 扣除积分
+                
             return reply
         else:
             reply = Reply(ReplyType.ERROR, "Bot不支持处理{}类型的消息".format(context.type))
